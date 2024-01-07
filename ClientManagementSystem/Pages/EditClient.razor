@@ -1,0 +1,55 @@
+﻿@page "/editclient/{Id}"
+
+@using ClientManagementSystem.Data
+@inject ClientService clientService
+@inject NavigationManager nav
+@inject MudBlazor.ISnackbar snackBar
+
+<MudContainer>
+    <MudPaper Class="mt-5">
+        <h3 class="mt-5 mb-4">Edit Clients</h3>
+
+        <MudEditForm Model="ClientObj" OnValidSubmit="EditRecord">
+            <MudDataAnnotationsValidator />
+
+            <MudTextField Label="First Name" @bind-Value="ClientObj.FirstName" />
+            <MudTextField Label="Last Name" @bind-Value="ClientObj.LasstName" />
+            <MudNumericField Label="Phone Number" @bind-Value="ClientObj.Phone" />
+            <MudNumericField Label="Amount Given" @bind-Value="ClientObj.AmountGiven" />
+            <MudNumericField Label="Percentage" @bind-Value="ClientObj.Rate" />
+            <MudDatePicker Label="Date Given" @bind-Value="ClientObj.DateGiven" />
+            <MudDatePicker Label="Date Due" @bind-Value="ClientObj.DateDue" />
+
+            <div class="mt-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="EditRecord">Update Client</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="Cancel">Cancel</MudButton>
+            </div>
+        </MudEditForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    Client ClientObj = new Client();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ClientObj = await Task.Run(() => clientService.GetById(Convert.ToInt32(Id)));
+    }
+
+    protected async Task EditRecord()
+    {
+        await clientService.Update(ClientObj);
+        snackBar.Add("Client Details Updated", Severity.Success);
+        StateHasChanged();
+        nav.NavigateTo("counter");
+        
+    }
+
+    private void Cancel()
+    {
+        nav.NavigateTo("counter");
+    }
+}

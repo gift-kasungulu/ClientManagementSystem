@@ -1,0 +1,110 @@
+﻿@page "/hello/{Id}"
+
+@using ClientManagementSystem.Data
+@inject ClientService clientService
+@inject NavigationManager nav
+
+<div class="mt-3">
+    @if (isClientAdded)
+    {
+        <div class="alert alert-dark fade show" role="alert">
+            Client was removed successfully
+            <button type="button" class="close" @onclick="() => isClientAdded = false">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h3 class="mt-5 mb-4">Delete Client</h3>
+            <form class="bg-light p-4">
+                <div class="form-group">
+                    <label for="name"><b>First Name</b></label>
+                    <span class="bg-white p-2">@ClientObj.FirstName</span>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <label for="name"><b>Last Name</b></label>
+                    <span class="bg-white p-2">@ClientObj.LasstName</span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <p>
+                    <label for="phonenumber"><b>Phone Number</b></label>
+                    +260
+                    <span class="bg-white p-2">@ClientObj.Phone</span>
+                    </p>
+                </div>
+                <br />
+                <div class="form-group">
+                    <p>
+                    <label for="amount"><b>Amount Given</b></label>
+                    K
+                    <span class=" p-2">@ClientObj.AmountGiven</span>
+                    </p>
+                </div>
+                <br />
+                <div class="form-group">
+                    <P>
+                    <label for="rate"><b>Percentage</b></label>
+                   
+                       <span class="bg-white p-2">@ClientObj.Rate</span>
+                   %
+                   </P
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="dategiven"><b>Date Given</b></label>
+                    <span class="bg-white p-2">@ClientObj.DateGiven</span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="datedue"><b>Date Due</b></label>
+                    <span class="bg-white p-2">@ClientObj.DateDue</span>
+                </div>
+                <br />
+                <div class="mt-4">
+                    <button type="button" class="btn btn-danger ml-2" @onclick="DeleteRecord">Delete Client</button>
+                    <button type="button" class="btn btn-primary ml-2" @onclick="Cancel">Cancel</button>
+                </div>
+            </form>
+
+
+</div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    Client ClientObj = new Client();
+    private bool isClientAdded = false;
+    private List<Client> clients = new List<Client>();
+
+    private int totalClients => clients?.Count ?? 0;
+    private double totalAmountGiven => clients?.Sum(c => c.AmountGiven ?? 0) ?? 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ClientObj = await Task.Run(() => clientService.GetById(Convert.ToInt32(Id)));
+    }
+
+    protected async void DeleteRecord()
+    {
+        await clientService.Delete(ClientObj);
+        isClientAdded = true;
+        nav.NavigateTo("counter");
+        
+    }
+
+    private void Cancel()
+    {
+        nav.NavigateTo("counter");
+    }
+}

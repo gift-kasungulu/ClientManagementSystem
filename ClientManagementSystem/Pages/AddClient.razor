@@ -1,0 +1,70 @@
+﻿@page "/AddClient"
+@using ClientManagementSystem.Data
+@inject ClientService clientService
+@inject NavigationManager nav
+@inject MudBlazor.ISnackbar snackBar
+
+
+<MudCard>
+    <MudCardContent>
+        <EditForm OnValidSubmit="AddNewClient" Model="ClientObj">
+            <MudGrid>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.LasstName" Label="Last Name" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.Phone" Label="Phone Number" Variant="Variant.Text" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.AmountGiven" Label="Amount Given" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Money"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.Rate" Label="Rate" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudDatePicker Label="Date Given" Editable="true" @bind-Date="ClientObj.DateGiven" />
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudDatePicker Label="Due Date " Editable="true" @bind-Date="ClientObj.DateDue" />
+                </MudItem>
+            </MudGrid>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" @onclick="AddNewClient">Save</MudButton>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
+
+
+@code {
+    Client ClientObj = new Client();
+    private bool isClientAdded = false;
+    private List<Client> clients = new List<Client>();
+
+    private int totalClients => clients?.Count ?? 0;
+    private double totalAmountGiven => clients?.Sum(c => c.AmountGiven ?? 0) ?? 0;
+
+    protected async void AddNewClient()
+    {
+        if (ClientObj.ClientId == 0)
+        {
+            await clientService.Add(ClientObj);
+            snackBar.Add("Client was Added", Severity.Success);
+            nav.NavigateTo("counter");
+            
+            
+        }
+        else
+        {
+            await clientService.Update(ClientObj);
+        }
+        ClientObj = new Client();
+        await clientService.GetAll();
+    }
+
+    private void Cancel()
+    {
+        nav.NavigateTo("counter");
+    }
+}
