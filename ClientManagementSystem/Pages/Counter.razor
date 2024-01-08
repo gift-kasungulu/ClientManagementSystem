@@ -13,34 +13,24 @@
 <MudCard Elevation="25">
     <MudCardContent>
             <MudToolBar>
-                
             
-            <div class="d-flex justify-content-end mb-3">
-                <div class="input-group input-group-md">
-                    @* <input type="text" class="form-control rounded" @bind-value="searchString" placeholder="Search client" /> *@
-                    <MudTextField @bind-Value="searchString" Label="Search For Client" Variant="Variant.Filled" Margin="Margin.Dense" AdornmentIcon="@Icons.Material.Filled.Search"></MudTextField>
-                    <span class="oi oi-search input-group-append"></span>
-                </div>
-            </div>
-
             <div class="text-center d-flex justify-content-start mb-3">
                 <div class="mx-2">
-                    <MudTooltip Text="Add New Client">
+                    <MudTooltip Text="Add New Client ">
                         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="GoToAdPage" />
                     </MudTooltip>
                 </div>
 
-                <div class="mx-2">
-                    <MudTooltip Text="Notifications">
-                        <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Doorbell" @onclick="GoTonotifications" />
+                <div class="mx-2 ">
+                    <MudTooltip Text="View Report">
+                        <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Doorbell" @onclick="GoToReport" />
                     </MudTooltip>
                 </div>
 
-                <div class="mx-2">
-                    <MudTooltip Text="Settings">
-                        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Settings" />
-                    </MudTooltip>
-                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+                <MudTextField @bind-Value="searchString" Label="Search For Client" Variant="Variant.Filled" Margin="Margin.Dense" AdornmentIcon="@Icons.Material.Filled.Search"></MudTextField>
             </div>
 
             </MudToolBar>
@@ -81,10 +71,10 @@
                         <td>@Clt.DateGiven</td>
                         <td>@Clt.DateDue</td>
                         <td>
-                            <a class="btn btn-success btn-sm mx-1" href="editclient/@Clt.ClientId">
+                            <a class="btn btn-success btn-sm mx-1 hideWhenPrint" href="editclient/@Clt.ClientId" >
                                 <span class="oi oi-pencil" aria-hidden="true">Edit</span>
                             </a>
-                            <button type="button" class="btn btn-danger btn-sm mx-1" @onclick="() => DeleteClientRecord(Clt)">
+                            <button type="button" class="btn btn-danger btn-sm mx-1 hideWhenPrint" @onclick="() => DeleteClientRecord(Clt)">
                                 <span class="oi oi-trash" aria-hidden="true">Delete</span>
                             </button>
                         </td>
@@ -114,7 +104,8 @@
         nav.NavigateTo("AddClient");
     }
 
-    private void GoTonotifications()
+
+    private void GoToReport()
     {
         nav.NavigateTo("stat");
     }
@@ -148,5 +139,10 @@
     {
         // Navigate to the edit page, passing the client ID or necessary data
         nav.NavigateTo($"EditClient/{client.ClientId}");
+    }
+
+    private void Print()
+    {
+        js.InvokeVoidAsync("Print");
     }
 }

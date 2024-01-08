@@ -1,4 +1,4 @@
-﻿<div class="top-row ps-3 navbar navbar-collapse" style="background-color: antiquewhite;">
+﻿<div class="top-row ps-3 navbar navbar-collapse hideWhenPrint" style="background-color: antiquewhite;">
     <div class="container-fluid">
         <a class="navbar-brand" href="">ClientManagementSystem</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu" style="background-color: #000000;">
+<div class="@NavMenuCssClass nav-scrollable hideWhenPrint" @onclick="ToggleNavMenu" style="background-color: #000000;">
     <nav class="flex-column">
         
         <div class="nav-item px-3">
