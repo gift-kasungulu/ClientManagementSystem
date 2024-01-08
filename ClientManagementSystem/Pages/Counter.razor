@@ -12,10 +12,13 @@
 
 <MudCard Elevation="25">
     <MudCardContent>
-        <MudItem>
+            <MudToolBar>
+                
+            
             <div class="d-flex justify-content-end mb-3">
                 <div class="input-group input-group-md">
-                    <input type="text" class="form-control rounded" @bind-value="searchString" placeholder="Search client" />
+                    @* <input type="text" class="form-control rounded" @bind-value="searchString" placeholder="Search client" /> *@
+                    <MudTextField @bind-Value="searchString" Label="Search For Client" Variant="Variant.Filled" Margin="Margin.Dense" AdornmentIcon="@Icons.Material.Filled.Search"></MudTextField>
                     <span class="oi oi-search input-group-append"></span>
                 </div>
             </div>
@@ -40,7 +43,7 @@
                 </div>
             </div>
 
-        </MudItem>
+            </MudToolBar>
     </MudCardContent>
 </MudCard>
 

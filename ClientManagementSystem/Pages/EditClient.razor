@@ -5,28 +5,41 @@
 @inject NavigationManager nav
 @inject MudBlazor.ISnackbar snackBar
 
-<MudContainer>
-    <MudPaper Class="mt-5">
-        <h3 class="mt-5 mb-4">Edit Clients</h3>
-
-        <MudEditForm Model="ClientObj" OnValidSubmit="EditRecord">
-            <MudDataAnnotationsValidator />
-
-            <MudTextField Label="First Name" @bind-Value="ClientObj.FirstName" />
-            <MudTextField Label="Last Name" @bind-Value="ClientObj.LasstName" />
-            <MudNumericField Label="Phone Number" @bind-Value="ClientObj.Phone" />
-            <MudNumericField Label="Amount Given" @bind-Value="ClientObj.AmountGiven" />
-            <MudNumericField Label="Percentage" @bind-Value="ClientObj.Rate" />
-            <MudDatePicker Label="Date Given" @bind-Value="ClientObj.DateGiven" />
-            <MudDatePicker Label="Date Due" @bind-Value="ClientObj.DateDue" />
-
-            <div class="mt-4">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="EditRecord">Update Client</MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="Cancel">Cancel</MudButton>
-            </div>
-        </MudEditForm>
-    </MudPaper>
-</MudContainer>
+<MudCard>
+    <MudCardContent>
+        <EditForm OnValidSubmit="EditRecord" Model="ClientObj">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <MudGrid>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.LasstName" Label="Last Name" Variant="Variant.Text"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.Phone" Label="Phone Number" Variant="Variant.Text" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.AmountGiven" Label="Amount Given" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Money"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudTextField @bind-Value="ClientObj.Rate" Label="Rate" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudDatePicker Label="Date Given" Editable="true" @bind-Date="ClientObj.DateGiven" />
+                </MudItem>
+                <MudItem xs="12" sm="4" md="6">
+                    <MudDatePicker Label="Due Date " Editable="true" @bind-Date="ClientObj.DateDue" />
+                </MudItem>
+            </MudGrid>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" @onclick="EditRecord">Save</MudButton>
+            <MudTooltip Text="Cancel">
+                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" @onclick="Cancel"></MudFab>
+            </MudTooltip>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [Parameter]

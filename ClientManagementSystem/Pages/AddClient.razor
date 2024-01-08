@@ -31,7 +31,11 @@
                     <MudDatePicker Label="Due Date " Editable="true" @bind-Date="ClientObj.DateDue" />
                 </MudItem>
             </MudGrid>
-            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" @onclick="AddNewClient">Save</MudButton>
+            <br />
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" @onclick="AddNewClient">Save</MudButton>
+            <MudTooltip Text="Cancel">
+                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" Size="Size.Small" @onclick="Cancel"></MudFab>
+            </MudTooltip>
         </EditForm>
     </MudCardContent>
 </MudCard>
