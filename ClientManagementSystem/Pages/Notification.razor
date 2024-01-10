@@ -12,12 +12,17 @@
 
 <MudCard Elevation="3" Class="m-4">
     <MudCardHeader>
-        <CardHeaderContent>
+        <CardHeaderContent>    
             <MudTooltip Text="Print Report">
                 <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Print" @onclick="Print" />
             </MudTooltip>
         </CardHeaderContent>
+        <CardHeaderContent>   
+               <MudText Typo="Typo.h6" Color="Color.Dark">Full Report</MudText>
+        </CardHeaderContent>
     </MudCardHeader>
+
+    <MudCardContent>
 
     <div class="m-4">
         @if (Obj is null)
@@ -57,15 +62,23 @@
             </table>
         }
     </div>
+        </MudCardContent>
 </MudCard>
-
+<br />
+<MudCard Elevation="3" Class="m-4">
+    <MudCardHeader>
+        <CardHeaderContent>
+                <MudText Typo="Typo.h6" Color="Color.Dark">Report on <b>Total</b></MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
 <div class="m-4">
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>Total Clients</th>
-                <th>Total Amount Given</th>
-                <th>Total Amount To Pay</th>
+                <th>Total Active Clients</th>
+                <th>Total Amount Given To All Clients</th>
+                <th>Total Amount To Be Paid By All Clients</th>
             </tr>
         </thead>
         <tbody>
@@ -77,6 +90,9 @@
         </tbody>
     </table>
 </div>
+</MudCardContent>
+</MudCard>
+<button class="btn btn-primary" type="button" @onclick="Print">Prints</button>
     @code {
         private string searchString = " ";
         private List<Client> Obj = new List<Client>();

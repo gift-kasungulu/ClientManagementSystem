@@ -1,49 +1,26 @@
-﻿<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-        <!-- Navbar brand -->
-        <a class="navbar-brand" href="#">Navbar</a>
-
-        <!-- Toggle button -->
-        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <i class="fas fa-bars text-light"></i>
+﻿<nav class="navbar navbar-expand-lg navStyle" data-bs-theme="dark">
+    <div class="container-xxl">
+        <a href="/" class="me-3">
+            <img src="/images/LOGO.png" height="50" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggler="collapse" data-bs-target="#navbarCms" aria-expanded="false" aria-label="toggle navigation">
+             <span class="navbar-toggler-icon"></span> 
         </button>
-
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left links -->
-            <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
-                <li class="nav-item text-center mx-2 mx-lg-1">
-                    <a class="nav-link active" aria-current="page" href="/">
-                        <div>
-                            <i class="fas fa-home fa-lg mb-1"></i>
-                        </div>
+        <div class="collapse navbar-collapse" id="navbarCms">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li>
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                        <i class="oi oi-home"></i>
                         Home
-                    </a>
+                    </NavLink>
                 </li>
-
-                
-                    <li class="nav-item text-center mx-2 mx-lg-1">
-                        <a class="nav-link active" href="counter">
-                            <div>
-                                <i class="fas fa-home fa-lg mb-1"></i>
-                            </div>
-                            Clients
-                        </a>
-                    </li>
-
-               
-                
+                <li>
+                    <NavLink class="nav-link" href="counter" Match="NavLinkMatch.All">
+                        <i class="oi oi-book"></i>
+                        Clients
+                    </NavLink>
+                </li>
             </ul>
-            <!-- Left links -->
-            
-           +
         </div>
-        <!-- Collapsible wrapper -->
     </div>
-    <!-- Container wrapper -->
 </nav>
-<!-- Navbar -->

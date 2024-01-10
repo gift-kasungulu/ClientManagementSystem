@@ -1,19 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
-@inject NavigationManager nav
-
 <PageTitle>ClientzManagementSystem</PageTitle>
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="page">
-  
-    <main>
-        <NavMenu></NavMenu>
-
-        <article class="content px-4">
-            @Body
-        </article>
+<div class="d-flex flex-column h-100">
+     <NavMenu></NavMenu>
+    <main class="flex-grow-1">
+        @Body
     </main>
 </div>
