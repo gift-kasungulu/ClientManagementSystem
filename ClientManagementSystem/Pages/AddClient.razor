@@ -55,7 +55,7 @@
         {
             await clientService.Add(ClientObj);
             snackBar.Add("Client was Added", Severity.Success);
-            nav.NavigateTo("counter");
+            nav.NavigateTo("/");
             
         
 
@@ -71,6 +71,6 @@
 
     private void Cancel()
     {
-        nav.NavigateTo("counter");
+        nav.NavigateTo("/");
     }
 }

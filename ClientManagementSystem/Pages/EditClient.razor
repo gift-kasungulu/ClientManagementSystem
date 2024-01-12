@@ -33,9 +33,10 @@
                 </MudItem>
             </MudGrid>
             <MudSpacer />
-            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" @onclick="EditRecord">Save</MudButton>
+            <br />
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" @onclick="EditRecord">Save</MudButton>
             <MudTooltip Text="Cancel">
-                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" @onclick="Cancel"></MudFab>
+                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" Size="Size.Small" @onclick="Cancel"></MudFab>
             </MudTooltip>
         </EditForm>
     </MudCardContent>
@@ -57,12 +58,12 @@
         await clientService.Update(ClientObj);
         snackBar.Add("Client Details Updated", Severity.Success);
         StateHasChanged();
-        nav.NavigateTo("counter");
+        nav.NavigateTo("/");
         
     }
 
     private void Cancel()
     {
-        nav.NavigateTo("counter");
+        nav.NavigateTo("/");
     }
 }
