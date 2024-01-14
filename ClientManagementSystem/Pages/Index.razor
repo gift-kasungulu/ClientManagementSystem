@@ -19,8 +19,20 @@
                         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="GoToAdPage" />
                     </MudTooltip>
        
-                    <MudFab Color="Color.Warning" StartIcon="@Icons.Material.Filled.Bookmark" Label="View Report" @onclick="GoToReport" class="ml-2" />
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Bookmark" @onclick="GoToReport" class="ml-2" />
                 </div>
+
+                <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+    <ActivatorContent>
+        <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip>
+    </ActivatorContent>
+    <ChildContent>
+        <MudMenuItem>Profile</MudMenuItem>
+        <MudMenuItem>Theme</MudMenuItem>
+        <MudMenuItem>Usage</MudMenuItem>
+        <MudMenuItem>Sign Out</MudMenuItem>
+    </ChildContent>
+</MudMenu>
 
             </div>
             <div class="ml-auto">
@@ -30,7 +42,11 @@
     </MudCardContent>
 </MudCard>
 <br />
-   <MudGrid Class="d-flex justify-content-center align-items-center">
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ToggleOpen">Overview</MudButton>
+<MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4">
+    <div class="d-flex flex-column">
+        
+           <MudGrid Class="d-flex justify-content-center align-items-center">
     <MudItem xs="3">
         
         <MudPaper Elevation="3" Class="d-flex align-center justify-center mud-width-full py-8 pa-4 blue darken-1 shades-text text-white">
@@ -61,7 +77,10 @@
             </b>
          </MudPaper>
     </MudItem>
-</MudGrid>>
+</MudGrid>
+        <MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+    </div>
+</MudPopover>
 <div>
 @if (IsLoading)
     {
@@ -71,7 +90,6 @@
     }
     else
     {
-        <!-- Your existing code for displaying data -->
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -146,31 +164,37 @@
         try
         {
             IsLoading = true;
-        Obj = await Task.Run(() => clientService.GetAll());
-        clients = Obj;
+            Obj = await Task.Run(() => clientService.GetAll());
+            clients = Obj;
 
-        // Calculate the Amount To Pay for each client
-        foreach (var client in Obj)
-        {
-            await clientService.CalculateAmountToPay(client);
-        }
-        totalAmountToPay = Obj.Sum(c => c.AmmountToPay); // the total for all 
+            // Calculate the Amount To Pay for each client
+            foreach (var client in Obj)
+            {
+                await clientService.CalculateAmountToPay(client);
+            }
+            totalAmountToPay = Obj.Sum(c => c.AmmountToPay); // the total for all 
         }
         finally
         {
             IsLoading = false;
         }
 
-        
+
     }
 
     protected async Task DeleteClientRecord(Client client)
     {
+        bool comfirmed = await js.InvokeAsync<bool>("confirm", "Are you sure you want to delete ?");
+
+        if (comfirmed)
+        {
+        
         if (client != null)
         {
             await clientService.Delete(client);
             Obj = await Task.Run(() => clientService.GetAll()); // Refresh the client list after deletion
             snackBar.Add("Client Deleted", Severity.Success);
+        }
         }
     }
 
@@ -183,5 +207,15 @@
     private void Print()
     {
         js.InvokeVoidAsync("Print");
+    }
+
+    public bool _isOpen;
+
+    public void ToggleOpen()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
     }
 }
