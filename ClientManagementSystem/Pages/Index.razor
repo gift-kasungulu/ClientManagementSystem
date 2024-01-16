@@ -9,8 +9,7 @@
 @inject MudBlazor.ISnackbar snackBar
 
 <PageTitle>Home</PageTitle>
-
-<MudCard Elevation="3">
+    <MudCard Elevation="3">
     <MudCardContent>
         <MudToolBar>
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -18,32 +17,20 @@
                     <MudTooltip Text="Add New Client">
                         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="GoToAdPage" />
                     </MudTooltip>
-       
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Bookmark" @onclick="GoToReport" class="ml-2" />
+                      <MudTooltip Text="View Report">
+                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Report" @onclick="GoToReport" class="ml-2" />
+                    </MudTooltip>
+
+                    <MudFab Variant="Variant.Filled" Color="Color.Primary" @onclick="ToggleOpen" Label="OverView"></MudFab>
                 </div>
-
-                <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
-    <ActivatorContent>
-        <MudChip Icon="@Icons.Material.Filled.Mouse" Color="Color.Primary">Mouse over</MudChip>
-    </ActivatorContent>
-    <ChildContent>
-        <MudMenuItem>Profile</MudMenuItem>
-        <MudMenuItem>Theme</MudMenuItem>
-        <MudMenuItem>Usage</MudMenuItem>
-        <MudMenuItem>Sign Out</MudMenuItem>
-    </ChildContent>
-</MudMenu>
-
             </div>
-            <div class="ml-auto">
+            <div class=" ml-auto">
                     <MudTextField @bind-Value="searchString" Label="Search" Variant="Variant.Text" Size="Size.Small" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Secondary" Class="w-100"></MudTextField>
                 </div>
         </MudToolBar>
     </MudCardContent>
 </MudCard>
-<br />
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@ToggleOpen">Overview</MudButton>
-<MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4">
+<MudPopover Open="@_isOpen" Fixed="true" Class="px-6 pt-6">
     <div class="d-flex flex-column">
         
            <MudGrid Class="d-flex justify-content-center align-items-center">
@@ -126,7 +113,12 @@
         </table>
     }
 </div>
+
+
 @code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
     private string searchString = " ";
     private List<Client> Obj = new List<Client>();
     Client ClientObj = new Client();

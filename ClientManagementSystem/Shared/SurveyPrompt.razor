@@ -1,7 +1,59 @@
 ﻿@page "/more"
+@* @layout LoginLayout
 
 @using ClientManagementSystem.Data
 @inject ClientService clientService
+@inject UserService userSevice
+@inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager nav
+@inject IJSRuntime js
 
-<h1>More</h1>
+<!-- Section: Design Block -->
+<div class="container">
+    <div class="wrapper">
+        <div class="title"><span>Login Form</span></div>
+        <form action="#">
+            <div class="row">
+                <i class="fas fa-user"></i>
+                <input @bind-value="model.UserName" type="text" placeholder="User Name" required>
+            </div>
+            <div class="row">
+                <i class="fas fa-lock"></i>
+                <input @bind-value="model.Password" type="password" placeholder="Password" required>
+            </div>
+            <div class="pass"><a href="#">Forgot password?</a></div>
+            <div class="row button">
+                <input @onclick="Authenticate" type="submit" value="Login">
+            </div>
+            <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
+        </form>
+    </div>
+</div>
+
+@code{
+    private class Model
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+
+    }
+    private Model model = new Model();
+
+    private async Task Authenticate()
+    {
+        var userAccount = userSevice.GetByUserName(model.UserName);
+        if(userAccount == null || userAccount.Password != model.Password)
+        {
+            await js.InvokeVoidAsync("alert", "wrong password or username ");
+            return;
+        }
+        var customAuthStateProvider = (CustomAuthStateProvider)AuthStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+            {
+                UserName = userAccount.UserName, // corrected property name
+                Role = userAccount.Role
+            });
+            nav.NavigateTo("/", true);
+    }
+
+} *@

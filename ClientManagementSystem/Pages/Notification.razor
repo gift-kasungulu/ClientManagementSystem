@@ -12,18 +12,11 @@
 
 <MudCard Elevation="3" Class="m-4">
     <MudCardHeader>
-        <CardHeaderContent>    
-            <MudTooltip Text="Print Report">
-                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Print" @onclick="Print" />
-            </MudTooltip>
-        </CardHeaderContent>
         <CardHeaderContent>   
                <MudText Typo="Typo.h6" Color="Color.Dark">Full Report</MudText>
         </CardHeaderContent>
     </MudCardHeader>
-
     <MudCardContent>
-
     <div class="m-4">
         @if (Obj is null)
         {
@@ -64,7 +57,6 @@
     </div>
         </MudCardContent>
 </MudCard>
-<br />
 <MudCard Elevation="3" Class="m-4">
     <MudCardHeader>
         <CardHeaderContent>
@@ -92,7 +84,6 @@
 </div>
 </MudCardContent>
 </MudCard>
-<br />
 <button class="btn btn-primary print-button" type="button" @onclick="Print">Print Report</button>
     @code {
         private string searchString = " ";

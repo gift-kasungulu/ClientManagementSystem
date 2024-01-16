@@ -4,6 +4,14 @@
 @inject NavigationManager nav
 @inject MudBlazor.ISnackbar snackBar
 
+<MudExpansionPanels Elevation="3">
+    <MudExpansionPanel Text="PERCENTAGES %" MaxHeight="150">
+        <MudText Typo="Typo.h6">10%  Weekly</MudText>
+        <MudText Typo="Typo.h6">22%  2 Weeks</MudText>
+        <MudText Typo="Typo.h6">30%  3 Weeks</MudText>
+        <MudText Typo="Typo.h6">30%  4 Weeks</MudText>
+    </MudExpansionPanel>
+</MudExpansionPanels>
 
 <MudCard>
     <MudCardContent>
@@ -55,11 +63,7 @@
         {
             await clientService.Add(ClientObj);
             snackBar.Add("Client was Added", Severity.Success);
-            nav.NavigateTo("/");
-            
-        
-
-            
+            nav.NavigateTo("/");   
         }
         else
         {
