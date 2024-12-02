@@ -1,5 +1,6 @@
 using ClientManagementSystem.Data;
 using ClientManagementSystem.MyContext;
+using ClientManagementSystem.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -17,6 +18,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddMudServices();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<LoanService>();
+builder.Services.AddScoped<SmsService>();
+
 
 var app = builder.Build();
 

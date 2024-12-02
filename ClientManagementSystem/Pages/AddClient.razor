@@ -1,80 +1,139 @@
 ﻿@page "/AddClient"
 @using ClientManagementSystem.Data
+@using ClientManagementSystem.Domain
+@using ClientManagementSystem.Services
 @inject ClientService clientService
 @inject NavigationManager nav
 @inject MudBlazor.ISnackbar snackBar
+@inject CustomerService CustomerService
 
-<MudExpansionPanels Elevation="3">
-    <MudExpansionPanel Text="PERCENTAGES %" MaxHeight="150">
-        <MudText Typo="Typo.h6">10%  Weekly</MudText>
-        <MudText Typo="Typo.h6">22%  2 Weeks</MudText>
-        <MudText Typo="Typo.h6">30%  3 Weeks</MudText>
-        <MudText Typo="Typo.h6">30%  4 Weeks</MudText>
-    </MudExpansionPanel>
-</MudExpansionPanels>
+<h1>Add Customer</h1>
 
-<MudCard>
-    <MudCardContent>
-        <EditForm OnValidSubmit="AddNewClient" Model="ClientObj">
-            <MudGrid>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudTextField @bind-Value="ClientObj.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudTextField @bind-Value="ClientObj.LasstName" Label="Last Name" Variant="Variant.Text"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudTextField @bind-Value="ClientObj.Phone" Label="Phone Number" Variant="Variant.Text" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudTextField @bind-Value="ClientObj.AmountGiven" Label="Amount Given" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Money"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudTextField @bind-Value="ClientObj.Rate" Label="Rate" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent"></MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudDatePicker Label="Date Given" Editable="true" @bind-Date="ClientObj.DateGiven" />
-                </MudItem>
-                <MudItem xs="12" sm="4" md="6">
-                    <MudDatePicker Label="Due Date " Editable="true" @bind-Date="ClientObj.DateDue" />
-                </MudItem>
-            </MudGrid>
-            <br />
-            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" @onclick="AddNewClient">Save</MudButton>
-            <MudTooltip Text="Cancel">
-                <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" Size="Size.Small" @onclick="Cancel"></MudFab>
-            </MudTooltip>
-        </EditForm>
-    </MudCardContent>
-</MudCard>
+<EditForm Model="@customer" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
+    <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <InputText id="fullName" @bind-Value="customer.FullName" class="form-control" />
+    </div>
 
-@code {
-    Client ClientObj = new Client();
-    private bool isClientAdded = false;
-    private List<Client> clients = new List<Client>();
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="customer.Email" class="form-control" />
+    </div>
 
-    private int totalClients => clients?.Count ?? 0;
-    private double totalAmountGiven => clients?.Sum(c => c.AmountGiven ?? 0) ?? 0;
+    <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <InputText id="phoneNumber" @bind-Value="customer.PhoneNumber" class="form-control" />
+    </div>
 
-    protected async void AddNewClient()
-    {
-        if (ClientObj.ClientId == 0)
-        {
-            await clientService.Add(ClientObj);
-            snackBar.Add("Client was Added", Severity.Success);
-            nav.NavigateTo("/");   
-        }
-        else
-        {
-            await clientService.Update(ClientObj);
-        }
-        ClientObj = new Client();
-        await clientService.GetAll();
+    <div class="form-group">
+        <label for="address">Address</label>
+        <InputText id="address" @bind-Value="customer.Address" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/" class="btn btn-secondary">Cancel</a>
+</EditForm>
+
+<div class="container my-5">
+    <h1 class="mb-4">Clients</h1>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Client</th>
+                <th scope="col">Repayments</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>$23,342.45</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm mr-2">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>$18,765.22</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm mr-2">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Michael Johnson</td>
+                <td>$29,876.54</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm mr-2">Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
     }
 
-    private void Cancel()
+    label {
+        font-weight: bold;
+    }
+
+    .btn {
+        margin-right: 0.5rem;
+    }
+
+    .table {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead th {
+            border-bottom: none;
+            background-color: #343a40;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 16px;
+        }
+
+        .table tbody td {
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+
+@code {
+    private Customer customer = new Customer();
+
+    private async Task HandleSubmit()
     {
-        nav.NavigateTo("/");
+        try
+        {
+            await CustomerService.AddCustomerAsync(customer);
+            
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or display an error message to the user
+            Console.WriteLine($"Error adding customer: {ex.Message}");
+            
+        }
     }
 }
