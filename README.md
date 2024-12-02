@@ -56,5 +56,5 @@ Ensure you have the following installed on your machine:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/client-management-system.git
+   git clone https://github.com/gift-kasungulu/client-management-system.git
    cd client-management-system
